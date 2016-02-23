@@ -9,7 +9,7 @@
 import Foundation
 import SpriteKit
 
-class SpaceshipData: NSObject, NSCoding{
+class DiskData: NSObject, NSCoding{
     
     var positionX: CGFloat!
     var positionY: CGFloat!

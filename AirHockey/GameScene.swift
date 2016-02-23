@@ -19,6 +19,7 @@ class GameScene: SKScene {
         case DiskCategory = 0
         case WallCategory = 1
         case PaddleCategory = 2
+        case OutsideScreenCategory = 3
     }
 
     
@@ -33,19 +34,12 @@ class GameScene: SKScene {
         
         /* Setup your scene here */
         
-        setupGame()
+        self.appDelegate.mpcManager.gameDelegate = self
         
+        setupGame()
         addPad("player2")
         addDisk()
         
-        physicsWorld.contactDelegate = self
-        physicsWorld.gravity = CGVector(dx: 0, dy: 0)
-        
-        let screenSize = CGRectMake(0, 0, self.frame.width, self.frame.height)
-        let borderBody = SKPhysicsBody(edgeLoopFromRect: screenSize)
-        borderBody.friction = 0
-        borderBody.categoryBitMask = ColliderType.WallCategory.rawValue
-        self.physicsBody = borderBody
         
         //print("Connected peers: \(appDelegate.mpcManager.session.connectedPeers)")
         
@@ -64,6 +58,31 @@ class GameScene: SKScene {
         bg.zPosition = 0
         
         self.addChild(bg)
+        
+        setupBorders()
+        
+    }
+    
+    func setupBorders() {
+        
+        physicsWorld.contactDelegate = self
+        physicsWorld.gravity = CGVector(dx: 0, dy: 0)
+        
+        let screenSize = CGRectMake(0, 0, self.frame.width, self.frame.height + 100)
+        let borderBody = SKPhysicsBody(edgeLoopFromRect: screenSize)
+        borderBody.friction = 0
+        borderBody.categoryBitMask = ColliderType.WallCategory.rawValue
+        self.physicsBody = borderBody
+        
+        let node = SKNode()
+        node.position.x = 0
+        node.position.y = 0
+        
+        self.addChild(node)
+        
+        node.physicsBody = SKPhysicsBody(edgeFromPoint: CGPointMake(0, self.frame.height), toPoint: CGPointMake(self.frame.width, self.frame.height))
+        
+        node.physicsBody?.categoryBitMask = ColliderType.OutsideScreenCategory.rawValue
         
     }
     
@@ -117,7 +136,7 @@ class GameScene: SKScene {
         disk.physicsBody?.allowsRotation = false
         disk.physicsBody?.affectedByGravity = false
         disk.physicsBody?.categoryBitMask = ColliderType.DiskCategory.rawValue
-        disk.physicsBody?.contactTestBitMask = ColliderType.PaddleCategory.rawValue
+        disk.physicsBody?.contactTestBitMask = ColliderType.PaddleCategory.rawValue | ColliderType.OutsideScreenCategory.rawValue
         
         //disk.physicsBody?.applyForce(CGVectorMake(300, 300))
         
@@ -173,6 +192,19 @@ extension GameScene: MPCGameDelegate{
         
     }
     
+    func loadDisk(data: DiskData) {
+        
+        let disk = self.childNodeWithName("disk")
+        
+        print("dy: \(data.dy)")
+        disk?.physicsBody?.velocity.dx = data.dx
+        disk?.physicsBody?.velocity.dy = data.dy
+        disk?.position.x = data.positionX
+        disk?.position.y = data.positionY
+        
+        disk?.hidden = false
+    }
+    
 }
 
 extension GameScene: SKPhysicsContactDelegate {
@@ -191,11 +223,39 @@ extension GameScene: SKPhysicsContactDelegate {
         }
         
         //firstBody es el disco
+        print(secondBody.categoryBitMask)
         
-        let vector = CGVectorMake(-(secondBody.node?.position.x)! + (firstBody.node?.position.x)!, -(secondBody.node?.position.y)! + (firstBody.node?.position.y)!)
+        switch (secondBody.categoryBitMask) {
         
-        firstBody.applyImpulse(vector)
-        
+        case ColliderType.OutsideScreenCategory.rawValue:
+            
+            print(firstBody.velocity.dy)
+            if( firstBody.velocity.dy < 0) {
+                
+                print("should send to the other device")
+            
+                let diskData = DiskData(positionX: (firstBody.node?.position.x)!, positionY: (firstBody.node?.position.y)!, dx: firstBody.velocity.dx, dy: firstBody.velocity.dy)
+            
+                let data = NSKeyedArchiver.archivedDataWithRootObject(diskData)
+                
+                firstBody.velocity = CGVectorMake(0,0);
+                firstBody.node?.hidden = true
+            
+                self.appDelegate.mpcManager.sendDiskData(data)
+            }
+            
+            break
+            
+        case ColliderType.PaddleCategory.rawValue:
+            let vector = CGVectorMake(-(secondBody.node?.position.x)! + (firstBody.node?.position.x)!, -(secondBody.node?.position.y)! + (firstBody.node?.position.y)!)
+            
+            firstBody.velocity = CGVectorMake(0,0);
+            firstBody.applyImpulse(vector)
+            break
+        default:
+            break
+        }
+    
     }
 }
 

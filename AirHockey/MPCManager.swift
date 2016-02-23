@@ -13,6 +13,7 @@ import SpriteKit
 protocol MPCGameDelegate{
     
     func assignPlayers()
+    func loadDisk(data : DiskData)
 }
 
 protocol MPCSearchPlayerDelegate{
@@ -25,13 +26,14 @@ protocol MPCSearchPlayerDelegate{
     
     func invitationWasReceived(fromPeer: String)
 }
+
 class MPCManager: NSObject{
     
     let serviceType = "demopeer-game"
     var myPeerId = MCPeerID(displayName: UIDevice.currentDevice().name)
     let serviceBrowser : MCNearbyServiceBrowser
     let serviceAdvertiser : MCNearbyServiceAdvertiser
-    var delegate : MPCGameDelegate?
+    var gameDelegate : MPCGameDelegate?
     var searchPlayerDelegate : MPCSearchPlayerDelegate?
     
     override init(){
@@ -58,7 +60,7 @@ class MPCManager: NSObject{
         return session
     }()
     
-    func sendShipData(data: NSData){
+    func sendDiskData(data: NSData){
         do{
             try self.session.sendData(data, toPeers: self.session.connectedPeers, withMode: MCSessionSendDataMode.Reliable)
             NSLog("Data Sended")
@@ -107,7 +109,10 @@ extension MPCManager: MCSessionDelegate{
         dispatch_async(dispatch_get_main_queue()){
             
             NSLog("Data Received")
-            let msg = NSKeyedUnarchiver.unarchiveObjectWithData(data) as! SKSpriteNode
+            
+            let msg = NSKeyedUnarchiver.unarchiveObjectWithData(data) as! DiskData
+            
+            self.gameDelegate?.loadDisk(msg)
             
             
         }
