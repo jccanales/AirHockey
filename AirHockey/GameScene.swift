@@ -22,10 +22,10 @@ class GameScene: SKScene {
         case OutsideScreenCategory = 3
     }
 
-    
+    var shouldSendDisk = false
     var padTouched = false
     var playerNumber = 0
-    var selectedNode = SKSpriteNode()
+    var disk = SKSpriteNode()
     
     let mpcManager = MPCManager()
     let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
@@ -36,21 +36,29 @@ class GameScene: SKScene {
         
         self.appDelegate.mpcManager.gameDelegate = self
         
+        
+        //assign players
+        
         setupGame()
-        addPad("player2")
-        addDisk()
-        
-        
+        addPad()
         //print("Connected peers: \(appDelegate.mpcManager.session.connectedPeers)")
+        
+        
         
         //let vector = CGVector(dx: 100, dy: 100)
         //sprite.physicsBody?.applyImpulse(vector)
-        
     }
     
     func setupGame() {
         
-        let bg = SKSpriteNode(imageNamed: "mitad1")
+        let bg : SKSpriteNode
+        if( self.appDelegate.player == "player1") {
+            
+        } else {
+            
+        }
+
+        bg = SKSpriteNode(imageNamed: "mitad1")
         
         bg.position = CGPoint(x: CGRectGetMidX(self.frame), y: CGRectGetMidY(self.frame))
         bg.size.height = self.frame.height
@@ -74,23 +82,24 @@ class GameScene: SKScene {
         borderBody.categoryBitMask = ColliderType.WallCategory.rawValue
         self.physicsBody = borderBody
         
-        let node = SKNode()
-        node.position.x = 0
-        node.position.y = 0
+        let topEdge = SKNode()
+        topEdge.position.x = 0
+        topEdge.position.y = 0
         
-        self.addChild(node)
+        self.addChild(topEdge)
         
-        node.physicsBody = SKPhysicsBody(edgeFromPoint: CGPointMake(0, self.frame.height), toPoint: CGPointMake(self.frame.width, self.frame.height))
+        topEdge.physicsBody = SKPhysicsBody(edgeFromPoint: CGPointMake(0, self.frame.height), toPoint: CGPointMake(self.frame.width, self.frame.height))
         
-        node.physicsBody?.categoryBitMask = ColliderType.OutsideScreenCategory.rawValue
+        topEdge.physicsBody?.categoryBitMask = ColliderType.OutsideScreenCategory.rawValue
         
     }
     
-    func addPad(player : String) {
+    func addPad() {
         
         let pad : SKSpriteNode
-        if( player == "player1") {
+        if( self.appDelegate.player == "player1") {
             pad = SKSpriteNode(imageNamed: "pad1")
+            addDisk()
         } else {
             pad = SKSpriteNode(imageNamed: "pad2")
         }
@@ -118,15 +127,30 @@ class GameScene: SKScene {
     
     func addDisk() {
         
-        let disk = SKSpriteNode(imageNamed: "disk")
-        disk.name = "disk"
-        disk.position = CGPoint(x: CGRectGetMidX(self.frame), y: CGRectGetMidY(self.frame))
-        disk.size.width = 50
-        disk.size.height = 50
+        disk = SKSpriteNode(imageNamed: "disk")
         
-        disk.zPosition = 2
+        disk.name = "disk"
+        
+        setupDisk(self.frame.width / 2, positionY: self.frame.height / 2)
         
         self.addChild(disk)
+        
+        configureDiskPhysics()
+        
+        
+        //disk.physicsBody?.applyForce(CGVectorMake(300, 300))
+    }
+    
+    func setupDisk(positionX : CGFloat, positionY : CGFloat) {
+        
+        disk.position = CGPoint(x: positionX, y: positionY)
+        disk.size.width = 50
+        disk.size.height = 50
+        disk.zPosition = 2
+
+    }
+    
+    func configureDiskPhysics() {
         
         disk.physicsBody = SKPhysicsBody(circleOfRadius: 25)
         disk.physicsBody?.dynamic = true
@@ -137,9 +161,7 @@ class GameScene: SKScene {
         disk.physicsBody?.affectedByGravity = false
         disk.physicsBody?.categoryBitMask = ColliderType.DiskCategory.rawValue
         disk.physicsBody?.contactTestBitMask = ColliderType.PaddleCategory.rawValue | ColliderType.OutsideScreenCategory.rawValue
-        
-        //disk.physicsBody?.applyForce(CGVectorMake(300, 300))
-        
+
     }
     
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
@@ -178,31 +200,39 @@ class GameScene: SKScene {
     override func update(currentTime: CFTimeInterval) {
         /* Called before each frame is rendered */
         
+        if(disk.position.y < self.frame.height - 50) {
+            self.shouldSendDisk = true
+        }
+        
+        
     }
     
 }
 
 extension GameScene: MPCGameDelegate{
     
-    func assignPlayers() {
+    func loadDisk(data: DiskData) {
         
-        let myNumber = rand()
+        disk = SKSpriteNode(imageNamed: "disk")
         
-        print(myNumber)
+        setupDisk(self.frame.width / 2, positionY: self.frame.height / 2)
+        
+        self.addChild(disk)
+        
+        configureDiskPhysics()
+
+        disk.physicsBody?.velocity.dx = -data.dx
+        disk.physicsBody?.velocity.dy = data.dy
+        disk.position.x = self.frame.width - data.positionX
+        disk.position.y = data.positionY
+        self.shouldSendDisk = false
         
     }
     
-    func loadDisk(data: DiskData) {
+    func hideDisk() {
         
-        let disk = self.childNodeWithName("disk")
-        
-        print("dy: \(data.dy)")
-        disk?.physicsBody?.velocity.dx = data.dx
-        disk?.physicsBody?.velocity.dy = data.dy
-        disk?.position.x = data.positionX
-        disk?.position.y = data.positionY
-        
-        disk?.hidden = false
+        disk.removeFromParent()
+        self.shouldSendDisk = false
     }
     
 }
@@ -223,23 +253,20 @@ extension GameScene: SKPhysicsContactDelegate {
         }
         
         //firstBody es el disco
+        
         print(secondBody.categoryBitMask)
         
         switch (secondBody.categoryBitMask) {
         
         case ColliderType.OutsideScreenCategory.rawValue:
             
-            print(firstBody.velocity.dy)
-            if( firstBody.velocity.dy < 0) {
-                
-                print("should send to the other device")
+            if( firstBody.velocity.dy < 0 && self.shouldSendDisk) {
             
                 let diskData = DiskData(positionX: (firstBody.node?.position.x)!, positionY: (firstBody.node?.position.y)!, dx: firstBody.velocity.dx, dy: firstBody.velocity.dy)
             
                 let data = NSKeyedArchiver.archivedDataWithRootObject(diskData)
                 
-                firstBody.velocity = CGVectorMake(0,0);
-                firstBody.node?.hidden = true
+                self.hideDisk()
             
                 self.appDelegate.mpcManager.sendDiskData(data)
             }
@@ -252,6 +279,7 @@ extension GameScene: SKPhysicsContactDelegate {
             firstBody.velocity = CGVectorMake(0,0);
             firstBody.applyImpulse(vector)
             break
+            
         default:
             break
         }

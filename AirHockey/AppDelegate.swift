@@ -13,11 +13,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
     var mpcManager: MPCManager!
+    var player : String!
+    var diskType : String!
+    var boardType : String!
 
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
         mpcManager = MPCManager()
+        player = "player1"
+        diskType = "disk1"
+        boardType = "var1"
         return true
     }
 

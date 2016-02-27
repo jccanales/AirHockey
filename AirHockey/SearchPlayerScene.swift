@@ -85,4 +85,8 @@ extension SearchPlayerScene: MPCSearchPlayerDelegate {
         
     }
     
+    func assignPlayer(player: String) {
+        self.appDelegate.player = player
+    }
+    
 }

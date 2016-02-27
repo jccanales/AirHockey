@@ -12,7 +12,6 @@ import SpriteKit
 
 protocol MPCGameDelegate{
     
-    func assignPlayers()
     func loadDisk(data : DiskData)
 }
 
@@ -25,6 +24,8 @@ protocol MPCSearchPlayerDelegate{
     func connectedWithPeer(peerID: MCPeerID)
     
     func invitationWasReceived(fromPeer: String)
+    
+    func assignPlayer(player : String)
 }
 
 class MPCManager: NSObject{
@@ -63,7 +64,6 @@ class MPCManager: NSObject{
     func sendDiskData(data: NSData){
         do{
             try self.session.sendData(data, toPeers: self.session.connectedPeers, withMode: MCSessionSendDataMode.Reliable)
-            NSLog("Data Sended")
             
         }catch{
             NSLog("Error ocurred")
@@ -81,6 +81,7 @@ extension MPCManager: MCNearbyServiceAdvertiserDelegate{
     func advertiser(advertiser: MCNearbyServiceAdvertiser, didReceiveInvitationFromPeer peerID: MCPeerID, withContext context: NSData?, invitationHandler: ((Bool, MCSession) -> Void)) {
         
         NSLog("%@", "didReceiveInvitationFromPeer \(peerID)")
+        self.searchPlayerDelegate?.assignPlayer("player2")
         invitationHandler(true, self.session)
     }
 }
@@ -94,8 +95,9 @@ extension MPCManager: MCNearbyServiceBrowserDelegate{
     func browser(browser: MCNearbyServiceBrowser, foundPeer peerID: MCPeerID, withDiscoveryInfo info: [String : String]?) {
         NSLog("%@", "foundPeer: \(peerID)")
         searchPlayerDelegate?.foundPeer(peerID)
+        self.searchPlayerDelegate?.assignPlayer("player1")
         //NSLog("%@", "invitePeer: \(peerID)")
-        browser.invitePeer(peerID, toSession: self.session, withContext: nil, timeout: 10)
+        //browser.invitePeer(peerID, toSession: self.session, withContext: nil, timeout: 10)
     }
     
     func browser(browser: MCNearbyServiceBrowser, lostPeer peerID: MCPeerID) {
@@ -108,13 +110,10 @@ extension MPCManager: MCSessionDelegate{
     func session(session: MCSession, didReceiveData data : NSData, fromPeer peerID: MCPeerID){
         dispatch_async(dispatch_get_main_queue()){
             
-            NSLog("Data Received")
-            
             let msg = NSKeyedUnarchiver.unarchiveObjectWithData(data) as! DiskData
             
             self.gameDelegate?.loadDisk(msg)
-            
-            
+        
         }
     }
     

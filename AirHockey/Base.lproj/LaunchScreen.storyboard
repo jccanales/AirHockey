@@ -3,40 +3,39 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9530"/>
-        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
         <!--View Controller-->
         <scene sceneID="EHf-IW-A2E">
             <objects>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="iYj-Kq-Ea1" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <viewController id="01J-lp-oVM" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="Llm-lL-Icb"/>
                         <viewControllerLayoutGuide type="bottom" id="xb3-aO-Qok"/>
                     </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="Ze5-6b-2t3">
+                    <view key="view" contentMode="scaleAspectFill" id="Ze5-6b-2t3">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="splashscreen.png" translatesAutoresizingMaskIntoConstraints="NO" id="jeC-uw-5Vo">
-                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="splashscreen.jpg" translatesAutoresizingMaskIntoConstraints="NO" id="yDl-nq-2f7">
+                                <rect key="frame" x="0.0" y="-7" width="600" height="627"/>
                             </imageView>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="xb3-aO-Qok" firstAttribute="top" secondItem="jeC-uw-5Vo" secondAttribute="bottom" id="8kg-wU-ipO"/>
-                            <constraint firstItem="jeC-uw-5Vo" firstAttribute="top" secondItem="Ze5-6b-2t3" secondAttribute="topMargin" id="OBq-Mu-jNh"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="jeC-uw-5Vo" secondAttribute="trailing" constant="-20" id="ddd-mn-Dsu"/>
-                            <constraint firstItem="jeC-uw-5Vo" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leadingMargin" constant="-20" id="t8H-n7-eIh"/>
+                            <constraint firstItem="yDl-nq-2f7" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leading" id="BGi-dG-dzs"/>
+                            <constraint firstAttribute="trailing" secondItem="yDl-nq-2f7" secondAttribute="trailing" id="Ry2-Z1-CgO"/>
+                            <constraint firstItem="xb3-aO-Qok" firstAttribute="top" secondItem="yDl-nq-2f7" secondAttribute="bottom" id="T9Y-Jo-oCN"/>
+                            <constraint firstItem="yDl-nq-2f7" firstAttribute="top" secondItem="Ze5-6b-2t3" secondAttribute="top" id="der-re-MNo"/>
                         </constraints>
                     </view>
                 </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="iYj-Kq-Ea1" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="53" y="375"/>
         </scene>
     </scenes>
     <resources>
-        <image name="splashscreen.png" width="8600" height="6467"/>
+        <image name="splashscreen.jpg" width="4300" height="3234"/>
     </resources>
 </document>
