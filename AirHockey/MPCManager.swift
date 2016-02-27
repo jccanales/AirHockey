@@ -13,6 +13,8 @@ import SpriteKit
 protocol MPCGameDelegate{
     
     func loadDisk(data : DiskData)
+    
+    func addPoint()
 }
 
 protocol MPCSearchPlayerDelegate{
@@ -25,22 +27,46 @@ protocol MPCSearchPlayerDelegate{
     
     func invitationWasReceived(fromPeer: String)
     
-    func assignPlayer(player : String)
+    func assignPlayer(player : String, pointType : String)
+    
+    func setBoardType(boardType : String)
 }
 
 class MPCManager: NSObject{
     
     let serviceType = "demopeer-game"
     var myPeerId = MCPeerID(displayName: UIDevice.currentDevice().name)
-    let serviceBrowser : MCNearbyServiceBrowser
-    let serviceAdvertiser : MCNearbyServiceAdvertiser
+    var serviceBrowser : MCNearbyServiceBrowser
+    var serviceAdvertiser : MCNearbyServiceAdvertiser
     var gameDelegate : MPCGameDelegate?
     var searchPlayerDelegate : MPCSearchPlayerDelegate?
+    var myNumber : Int32
+    let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
     
     override init(){
-        self.serviceAdvertiser = MCNearbyServiceAdvertiser(peer: myPeerId, discoveryInfo: nil, serviceType: serviceType)
+        
+        let time = UInt32(NSDate().timeIntervalSinceReferenceDate)
+        srand(time)
+        
+        myNumber = rand()
+        
+        var discoveryInfo = [String:String]()
+        
+        discoveryInfo["number"] = String(myNumber)
+        
+        let boardVariation = rand() % 3 + 1
+        
+        let boardType = "var\(boardVariation)"
+        
+        self.appDelegate.boardType = boardType
+        
+        discoveryInfo["boardType"] = boardType
+        
+        
+        self.serviceAdvertiser = MCNearbyServiceAdvertiser(peer: myPeerId, discoveryInfo: discoveryInfo, serviceType: serviceType)
         
         self.serviceBrowser = MCNearbyServiceBrowser(peer: myPeerId, serviceType: serviceType)
+
         
         super.init()
         
@@ -48,6 +74,38 @@ class MPCManager: NSObject{
         
         self.serviceBrowser.delegate = self
 
+    }
+    
+    func resetMPCObjects() {
+        
+        self.serviceBrowser.stopBrowsingForPeers()
+        self.serviceAdvertiser.stopAdvertisingPeer()
+        
+        myNumber = rand()
+        
+        var discoveryInfo = [String:String]()
+        
+        discoveryInfo["number"] = String(myNumber)
+        
+        let boardVariation = rand() % 3 + 1
+        
+        let boardType = "var\(boardVariation)"
+        
+        self.appDelegate.boardType = boardType
+        
+        discoveryInfo["boardType"] = boardType
+        
+        
+        self.serviceAdvertiser = MCNearbyServiceAdvertiser(peer: myPeerId, discoveryInfo: discoveryInfo, serviceType: serviceType)
+        
+        self.serviceBrowser = MCNearbyServiceBrowser(peer: myPeerId, serviceType: serviceType)
+        
+        self.serviceAdvertiser.delegate = self
+        self.serviceBrowser.delegate = self
+        
+        self.serviceBrowser.startBrowsingForPeers()
+        self.serviceAdvertiser.startAdvertisingPeer()
+        
     }
     
     deinit {
@@ -70,6 +128,19 @@ class MPCManager: NSObject{
         }
     }
     
+    func goalScored() {
+        do {
+            
+            let message = Message(message: "goal")
+            
+            let data = NSKeyedArchiver.archivedDataWithRootObject(message)
+            
+            try self.session.sendData(data, toPeers: self.session.connectedPeers, withMode: MCSessionSendDataMode.Reliable)
+        } catch {
+            NSLog("Error ocurred")
+        }
+    }
+    
 }
 
 extension MPCManager: MCNearbyServiceAdvertiserDelegate{
@@ -81,7 +152,7 @@ extension MPCManager: MCNearbyServiceAdvertiserDelegate{
     func advertiser(advertiser: MCNearbyServiceAdvertiser, didReceiveInvitationFromPeer peerID: MCPeerID, withContext context: NSData?, invitationHandler: ((Bool, MCSession) -> Void)) {
         
         NSLog("%@", "didReceiveInvitationFromPeer \(peerID)")
-        self.searchPlayerDelegate?.assignPlayer("player2")
+        self.searchPlayerDelegate?.assignPlayer("player2", pointType: "punto_azul")
         invitationHandler(true, self.session)
     }
 }
@@ -94,8 +165,18 @@ extension MPCManager: MCNearbyServiceBrowserDelegate{
     
     func browser(browser: MCNearbyServiceBrowser, foundPeer peerID: MCPeerID, withDiscoveryInfo info: [String : String]?) {
         NSLog("%@", "foundPeer: \(peerID)")
-        searchPlayerDelegate?.foundPeer(peerID)
-        self.searchPlayerDelegate?.assignPlayer("player1")
+        
+        let string = info!["number"]
+        
+        let number = Int32(string!)
+        
+        if ( number > myNumber) {
+            self.searchPlayerDelegate?.assignPlayer("player1", pointType: "punto_rojo")
+            browser.invitePeer(peerID, toSession: self.session, withContext: nil, timeout: 10)
+        } else {
+            self.appDelegate.boardType = info!["boardType"]!
+        }
+        
         //NSLog("%@", "invitePeer: \(peerID)")
         //browser.invitePeer(peerID, toSession: self.session, withContext: nil, timeout: 10)
     }
@@ -110,9 +191,26 @@ extension MPCManager: MCSessionDelegate{
     func session(session: MCSession, didReceiveData data : NSData, fromPeer peerID: MCPeerID){
         dispatch_async(dispatch_get_main_queue()){
             
-            let msg = NSKeyedUnarchiver.unarchiveObjectWithData(data) as! DiskData
             
-            self.gameDelegate?.loadDisk(msg)
+            let msg = NSKeyedUnarchiver.unarchiveObjectWithData(data)
+            
+            print("DiskData? : \(msg?.isKindOfClass(DiskData))")
+            print("Message? : \(msg?.isKindOfClass(Message))")
+                
+            if (msg!.isKindOfClass(DiskData)) {
+                self.gameDelegate?.loadDisk(msg as! DiskData)
+            } else {
+                
+                if (msg!.isKindOfClass(Message)) {
+                    let messageType = (msg as! Message).message
+                    
+                    if(messageType == "goal") {
+                        self.gameDelegate?.addPoint()
+                    }
+                    
+                }
+                
+            }
         
         }
     }
@@ -148,6 +246,8 @@ extension MPCManager: MCSessionDelegate{
             
         case MCSessionState.NotConnected:
             print("Not Connected: \(peerID.displayName)")
+            
+            self.resetMPCObjects()
         }
     }
     

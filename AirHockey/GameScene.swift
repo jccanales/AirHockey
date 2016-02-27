@@ -20,14 +20,16 @@ class GameScene: SKScene {
         case WallCategory = 1
         case PaddleCategory = 2
         case OutsideScreenCategory = 3
+        case GoalCategory = 4
     }
 
     var shouldSendDisk = false
     var padTouched = false
     var playerNumber = 0
     var disk = SKSpriteNode()
+    var points = [SKSpriteNode?](count: 7, repeatedValue: nil)
+    var currentPoints = 0
     
-    let mpcManager = MPCManager()
     let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
     
     override func didMoveToView(view: SKView) {
@@ -52,13 +54,13 @@ class GameScene: SKScene {
     func setupGame() {
         
         let bg : SKSpriteNode
+        
         if( self.appDelegate.player == "player1") {
-            
+            bg = SKSpriteNode(imageNamed: "\(self.appDelegate.boardType)mesa1")
         } else {
-            
+            bg = SKSpriteNode(imageNamed: "\(self.appDelegate.boardType)mesa2")
         }
 
-        bg = SKSpriteNode(imageNamed: "mitad1")
         
         bg.position = CGPoint(x: CGRectGetMidX(self.frame), y: CGRectGetMidY(self.frame))
         bg.size.height = self.frame.height
@@ -68,6 +70,41 @@ class GameScene: SKScene {
         self.addChild(bg)
         
         setupBorders()
+        
+        setupGoal()
+        setupPoints()
+        
+    }
+    
+    func setupPoints() {
+        
+        for index in 0...6 {
+            
+            let node = SKSpriteNode(imageNamed: "punto_blanco")
+            
+            node.position.x = self.size.width / 2 - 150 + CGFloat(index * 50)
+            node.position.y = self.size.height / 2 - 100
+            node.zPosition = 1
+            node.setScale(0.1)
+            
+            points[index] = node
+            
+            self.addChild(node)
+        }
+        
+    }
+    
+    func setupGoal() {
+        
+        let goal = SKNode()
+        
+        goal.position = CGPoint(x: CGRectGetMidX(self.frame) - 185, y: 30)
+        
+        self.addChild(goal)
+        
+        let rect = CGRectMake(0, 0, 370, 30)
+        goal.physicsBody = SKPhysicsBody(edgeLoopFromRect: rect)
+        goal.physicsBody?.categoryBitMask = ColliderType.GoalCategory.rawValue
         
     }
     
@@ -160,7 +197,7 @@ class GameScene: SKScene {
         disk.physicsBody?.allowsRotation = false
         disk.physicsBody?.affectedByGravity = false
         disk.physicsBody?.categoryBitMask = ColliderType.DiskCategory.rawValue
-        disk.physicsBody?.contactTestBitMask = ColliderType.PaddleCategory.rawValue | ColliderType.OutsideScreenCategory.rawValue
+        disk.physicsBody?.contactTestBitMask = ColliderType.PaddleCategory.rawValue | ColliderType.OutsideScreenCategory.rawValue | ColliderType.GoalCategory.rawValue
 
     }
     
@@ -200,11 +237,6 @@ class GameScene: SKScene {
     override func update(currentTime: CFTimeInterval) {
         /* Called before each frame is rendered */
         
-        if(disk.position.y < self.frame.height - 50) {
-            self.shouldSendDisk = true
-        }
-        
-        
     }
     
 }
@@ -227,6 +259,14 @@ extension GameScene: MPCGameDelegate{
         disk.position.y = data.positionY
         self.shouldSendDisk = false
         
+    }
+    
+    func addPoint() {
+        
+        if ( currentPoints < 6) {
+            points[currentPoints++]?.texture = SKTexture(imageNamed: self.appDelegate.pointType)
+            addDisk()
+        }
     }
     
     func hideDisk() {
@@ -254,7 +294,7 @@ extension GameScene: SKPhysicsContactDelegate {
         
         //firstBody es el disco
         
-        print(secondBody.categoryBitMask)
+        //print(secondBody.categoryBitMask)
         
         switch (secondBody.categoryBitMask) {
         
@@ -278,6 +318,13 @@ extension GameScene: SKPhysicsContactDelegate {
             
             firstBody.velocity = CGVectorMake(0,0);
             firstBody.applyImpulse(vector)
+            shouldSendDisk = true
+            break
+            
+        case ColliderType.GoalCategory.rawValue:
+            hideDisk()
+            self.appDelegate.mpcManager.goalScored()
+            
             break
             
         default:

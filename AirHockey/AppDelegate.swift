@@ -14,6 +14,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
     var mpcManager: MPCManager!
     var player : String!
+    var pointType : String!
     var diskType : String!
     var boardType : String!
 

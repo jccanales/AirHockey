@@ -7,8 +7,12 @@
 //
 
 import SpriteKit
+import MultipeerConnectivity
 
 class MainScene: SKScene {
+    
+    let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+    
     override func didMoveToView(view: SKView) {
         /* Setup your scene here */
         let bg = SKSpriteNode(imageNamed: "main_background")
@@ -41,6 +45,9 @@ class MainScene: SKScene {
         shapePlay.zPosition = 1
         
         self.addChild(shapePlay)
+        
+        appDelegate.mpcManager.searchPlayerDelegate = self
+        
     }
     
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
@@ -54,12 +61,19 @@ class MainScene: SKScene {
             if( sprite.name != nil) {
                 switch(sprite.name!) {
                     case "Play":
+                        
+                        appDelegate.mpcManager.serviceBrowser.startBrowsingForPeers()
+                        appDelegate.mpcManager.serviceAdvertiser.startAdvertisingPeer()
+                        
+                        /*
+
                         let transition = SKTransition.revealWithDirection(.Down, duration: 1.0)
                     
                         let nextScene = SearchPlayerScene(size: scene!.size)
                         nextScene.scaleMode = .AspectFill
                     
                         scene?.view?.presentScene(nextScene, transition: transition)
+                        */
                 
                     case "Rules":
                         let transition = SKTransition.revealWithDirection(.Right, duration: 1.0)
@@ -89,4 +103,43 @@ class MainScene: SKScene {
     override func update(currentTime: CFTimeInterval) {
         /* Called before each frame is rendered */
     }
+}
+
+extension MainScene: MPCSearchPlayerDelegate {
+    
+    func foundPeer(peerID : MCPeerID) {
+        print("found peer (\(peerID))")
+        
+    }
+    
+    func lostPeer(peerID : MCPeerID) {
+        print("lost peer \(peerID)")
+    }
+    
+    func connectedWithPeer(peerID: MCPeerID) {
+        
+        self.appDelegate.mpcManager.serviceBrowser.stopBrowsingForPeers()
+        self.appDelegate.mpcManager.serviceAdvertiser.stopAdvertisingPeer()
+        
+        let transition = SKTransition.revealWithDirection(.Down, duration: 1.0)
+        
+        let nextScene = GameScene(size: scene!.size)
+        nextScene.scaleMode = .AspectFill
+        
+        scene?.view?.presentScene(nextScene, transition: transition)
+    }
+    
+    func invitationWasReceived(fromPeer: String) {
+        
+    }
+    
+    func assignPlayer(player: String, pointType : String) {
+        self.appDelegate.player = player
+        self.appDelegate.pointType = pointType
+    }
+    
+    func setBoardType(boardType : String) {
+        self.appDelegate.boardType = boardType
+    }
+    
 }
