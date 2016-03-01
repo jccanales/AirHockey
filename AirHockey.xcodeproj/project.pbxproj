@@ -11,6 +11,7 @@
 		3D0070AA1C7A5D8100D5BD2D /* pad2.png in Resources */ = {isa = PBXBuildFile; fileRef = 3D0070A81C7A5D8100D5BD2D /* pad2.png */; };
 		3D0070AC1C7A691E00D5BD2D /* disk.png in Resources */ = {isa = PBXBuildFile; fileRef = 3D0070AB1C7A691E00D5BD2D /* disk.png */; };
 		3D2C370D1C78D04700272A97 /* MainScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D2C370C1C78D04700272A97 /* MainScene.swift */; };
+		3D5FE9F71C8547C500BC8A23 /* point.wav in Resources */ = {isa = PBXBuildFile; fileRef = 3D5FE9F61C8547C500BC8A23 /* point.wav */; };
 		3D6201E41C7A3F200088AE5F /* mitad1.png in Resources */ = {isa = PBXBuildFile; fileRef = 3D6201E31C7A3F200088AE5F /* mitad1.png */; };
 		3D8779C81C81784700AED305 /* splashscreen.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 3D8779C71C81784700AED305 /* splashscreen.jpg */; };
 		3D8779CC1C817E9D00AED305 /* main_background.png in Resources */ = {isa = PBXBuildFile; fileRef = 3D8779CB1C817E9D00AED305 /* main_background.png */; };
@@ -63,6 +64,7 @@
 		3D0070A81C7A5D8100D5BD2D /* pad2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pad2.png; sourceTree = "<group>"; };
 		3D0070AB1C7A691E00D5BD2D /* disk.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = disk.png; sourceTree = "<group>"; };
 		3D2C370C1C78D04700272A97 /* MainScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainScene.swift; sourceTree = "<group>"; };
+		3D5FE9F61C8547C500BC8A23 /* point.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = point.wav; sourceTree = "<group>"; };
 		3D6201E31C7A3F200088AE5F /* mitad1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mitad1.png; sourceTree = "<group>"; };
 		3D8779C71C81784700AED305 /* splashscreen.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = splashscreen.jpg; sourceTree = "<group>"; };
 		3D8779CB1C817E9D00AED305 /* main_background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = main_background.png; sourceTree = "<group>"; };
@@ -189,6 +191,7 @@
 		3DC63FE21C78EA7B0086C3FD /* Assets */ = {
 			isa = PBXGroup;
 			children = (
+				3D5FE9F61C8547C500BC8A23 /* point.wav */,
 				3D8779E81C81E9AC00AED305 /* var1mesa1.png */,
 				3D8779E71C81E9AC00AED305 /* var1mesa2.png */,
 				3D8779EA1C81E9AC00AED305 /* var2mesa1.png */,
@@ -320,6 +323,7 @@
 				3D8779ED1C81E9AC00AED305 /* var1mesa2.png in Resources */,
 				3DA0E3901C5C5D7300DA75A3 /* GameScene.sks in Resources */,
 				3DA0E39C1C5C5D7300DA75A3 /* LaunchScreen.storyboard in Resources */,
+				3D5FE9F71C8547C500BC8A23 /* point.wav in Resources */,
 				3D8779EF1C81E9AC00AED305 /* var2mesa2.png in Resources */,
 				3D0070AC1C7A691E00D5BD2D /* disk.png in Resources */,
 				3D0070AA1C7A5D8100D5BD2D /* pad2.png in Resources */,

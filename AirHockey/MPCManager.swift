@@ -15,6 +15,8 @@ protocol MPCGameDelegate{
     func loadDisk(data : DiskData)
     
     func addPoint()
+    
+    func endGame()
 }
 
 protocol MPCSearchPlayerDelegate{
@@ -128,6 +130,19 @@ class MPCManager: NSObject{
         }
     }
     
+    func gameFinished() {
+        do {
+            
+            let message = Message(message: "endGame")
+            
+            let data = NSKeyedArchiver.archivedDataWithRootObject(message)
+            
+            try self.session.sendData(data, toPeers: self.session.connectedPeers, withMode: MCSessionSendDataMode.Reliable)
+        } catch {
+            NSLog("Error ocurred")
+        }
+    }
+    
     func goalScored() {
         do {
             
@@ -193,9 +208,6 @@ extension MPCManager: MCSessionDelegate{
             
             
             let msg = NSKeyedUnarchiver.unarchiveObjectWithData(data)
-            
-            print("DiskData? : \(msg?.isKindOfClass(DiskData))")
-            print("Message? : \(msg?.isKindOfClass(Message))")
                 
             if (msg!.isKindOfClass(DiskData)) {
                 self.gameDelegate?.loadDisk(msg as! DiskData)
@@ -208,10 +220,11 @@ extension MPCManager: MCSessionDelegate{
                         self.gameDelegate?.addPoint()
                     }
                     
+                    if(messageType == "endGame") {
+                        self.gameDelegate?.endGame()
+                    }
                 }
-                
             }
-        
         }
     }
     

@@ -39,7 +39,7 @@ class AboutScene: SKScene {
             let sprite = self.nodeAtPoint(location)
             
             if(sprite.name == "Back") {
-                let transition = SKTransition.revealWithDirection(.Left, duration: 1.0)
+                let transition = SKTransition.revealWithDirection(.Right, duration: 1.0)
                 let nextScene = MainScene(size: scene!.size)
                 nextScene.scaleMode = .AspectFill
                 

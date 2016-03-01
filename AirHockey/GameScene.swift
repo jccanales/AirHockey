@@ -8,6 +8,7 @@
 
 import SpriteKit
 import MultipeerConnectivity
+import AVFoundation
 
 protocol GameSceneDelegate{
     func changeDevice(data: NSData)
@@ -29,6 +30,8 @@ class GameScene: SKScene {
     var disk = SKSpriteNode()
     var points = [SKSpriteNode?](count: 7, repeatedValue: nil)
     var currentPoints = 0
+    var player: AVAudioPlayer = AVAudioPlayer()
+    var pad : SKSpriteNode!
     
     let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
     
@@ -38,15 +41,12 @@ class GameScene: SKScene {
         
         self.appDelegate.mpcManager.gameDelegate = self
         
-        
         //assign players
         
         setupGame()
         addPad()
+        
         //print("Connected peers: \(appDelegate.mpcManager.session.connectedPeers)")
-        
-        
-        
         //let vector = CGVector(dx: 100, dy: 100)
         //sprite.physicsBody?.applyImpulse(vector)
     }
@@ -92,6 +92,18 @@ class GameScene: SKScene {
             self.addChild(node)
         }
         
+        let audioPath = NSBundle.mainBundle().pathForResource("point", ofType: "wav")!
+        
+        do {
+            
+            try player = AVAudioPlayer(contentsOfURL: NSURL(fileURLWithPath: audioPath))
+            
+        } catch {
+            
+            // Process error here
+            
+        }
+        
     }
     
     func setupGoal() {
@@ -133,7 +145,6 @@ class GameScene: SKScene {
     
     func addPad() {
         
-        let pad : SKSpriteNode
         if( self.appDelegate.player == "player1") {
             pad = SKSpriteNode(imageNamed: "pad1")
             addDisk()
@@ -162,8 +173,25 @@ class GameScene: SKScene {
         
     }
     
+    func printGameState(section: String) {
+        
+        print("\(section)\n")
+        print("\(disk)\n")
+        print("Should Send Disk?: \(shouldSendDisk)\n")
+        print("Points: \(points)\n")
+        print("------\n")
+        
+    }
+    
+    func resetPad() {
+        
+        pad.position = CGPoint(x: CGRectGetMidX(self.frame), y: CGRectGetMidY(self.frame) - 100)
+        
+    }
+    
     func addDisk() {
         
+        disk.removeFromParent()
         disk = SKSpriteNode(imageNamed: "disk")
         
         disk.name = "disk"
@@ -245,6 +273,8 @@ extension GameScene: MPCGameDelegate{
     
     func loadDisk(data: DiskData) {
         
+        disk.removeFromParent()
+        
         disk = SKSpriteNode(imageNamed: "disk")
         
         setupDisk(self.frame.width / 2, positionY: self.frame.height / 2)
@@ -263,18 +293,37 @@ extension GameScene: MPCGameDelegate{
     
     func addPoint() {
         
-        if ( currentPoints < 6) {
+        if ( currentPoints < 7) {
             points[currentPoints++]?.texture = SKTexture(imageNamed: self.appDelegate.pointType)
+            player.play()
+            resetPad()
             addDisk()
+        } else {
+            
+            self.appDelegate.mpcManager.gameFinished()
+            let transition = SKTransition.revealWithDirection(.Up, duration: 1.0)
+            let nextScene = MainScene(size: scene!.size)
+            nextScene.scaleMode = .AspectFill
+            
+            scene?.view?.presentScene(nextScene, transition: transition)
+
         }
     }
     
     func hideDisk() {
-        
         disk.removeFromParent()
         self.shouldSendDisk = false
     }
     
+    func endGame () {
+        
+        let transition = SKTransition.revealWithDirection(.Up, duration: 1.0)
+        let nextScene = MainScene(size: scene!.size)
+        nextScene.scaleMode = .AspectFill
+        
+        scene?.view?.presentScene(nextScene, transition: transition)
+        
+    }
 }
 
 extension GameScene: SKPhysicsContactDelegate {
@@ -324,9 +373,13 @@ extension GameScene: SKPhysicsContactDelegate {
         case ColliderType.GoalCategory.rawValue:
             hideDisk()
             self.appDelegate.mpcManager.goalScored()
-            
             break
-            
+        
+        case ColliderType.WallCategory.rawValue:
+            if(firstBody.node?.position.y < 100) {
+                self.shouldSendDisk = true
+            }
+            break
         default:
             break
         }
