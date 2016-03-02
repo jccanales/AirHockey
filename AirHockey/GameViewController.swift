@@ -17,11 +17,11 @@ class GameViewController: UIViewController {
         if let scene = MainScene(fileNamed:"GameScene") {
             // Configure the view.
             let skView = self.view as! SKView
-            skView.showsFPS = true
-            skView.showsNodeCount = true
+            //skView.showsFPS = true
+            //skView.showsNodeCount = true
             
             // shows sprite physics body
-            skView.showsPhysics = true
+            //skView.showsPhysics = true
             
             /* Sprite Kit applies additional optimizations to improve rendering performance */
             skView.ignoresSiblingOrder = true

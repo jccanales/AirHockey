@@ -192,7 +192,7 @@ class GameScene: SKScene {
     func addDisk() {
         
         disk.removeFromParent()
-        disk = SKSpriteNode(imageNamed: "disk")
+        disk = SKSpriteNode(imageNamed: "disk1")
         
         disk.name = "disk"
         
@@ -209,8 +209,8 @@ class GameScene: SKScene {
     func setupDisk(positionX : CGFloat, positionY : CGFloat) {
         
         disk.position = CGPoint(x: positionX, y: positionY)
-        disk.size.width = 50
-        disk.size.height = 50
+        disk.size.width = 100
+        disk.size.height = 75
         disk.zPosition = 2
 
     }
@@ -275,7 +275,8 @@ extension GameScene: MPCGameDelegate{
         
         disk.removeFromParent()
         
-        disk = SKSpriteNode(imageNamed: "disk")
+        disk = SKSpriteNode(imageNamed: "disk1")
+        disk.name = "disk"
         
         setupDisk(self.frame.width / 2, positionY: self.frame.height / 2)
         
@@ -293,7 +294,7 @@ extension GameScene: MPCGameDelegate{
     
     func addPoint() {
         
-        if ( currentPoints < 7) {
+        if ( currentPoints < 6) {
             points[currentPoints++]?.texture = SKTexture(imageNamed: self.appDelegate.pointType)
             player.play()
             resetPad()
@@ -301,6 +302,7 @@ extension GameScene: MPCGameDelegate{
         } else {
             
             self.appDelegate.mpcManager.gameFinished()
+            self.appDelegate.mpcManager.session.disconnect()
             let transition = SKTransition.revealWithDirection(.Up, duration: 1.0)
             let nextScene = MainScene(size: scene!.size)
             nextScene.scaleMode = .AspectFill
@@ -317,6 +319,7 @@ extension GameScene: MPCGameDelegate{
     
     func endGame () {
         
+        self.appDelegate.mpcManager.session.disconnect()
         let transition = SKTransition.revealWithDirection(.Up, duration: 1.0)
         let nextScene = MainScene(size: scene!.size)
         nextScene.scaleMode = .AspectFill

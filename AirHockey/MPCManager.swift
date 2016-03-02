@@ -49,19 +49,13 @@ class MPCManager: NSObject{
         
         let time = UInt32(NSDate().timeIntervalSinceReferenceDate)
         srand(time)
-        
         myNumber = rand()
-        
         var discoveryInfo = [String:String]()
-        
         discoveryInfo["number"] = String(myNumber)
         
         let boardVariation = rand() % 3 + 1
-        
         let boardType = "var\(boardVariation)"
-        
         self.appDelegate.boardType = boardType
-        
         discoveryInfo["boardType"] = boardType
         
         
@@ -86,17 +80,12 @@ class MPCManager: NSObject{
         myNumber = rand()
         
         var discoveryInfo = [String:String]()
-        
         discoveryInfo["number"] = String(myNumber)
         
         let boardVariation = rand() % 3 + 1
-        
         let boardType = "var\(boardVariation)"
-        
         self.appDelegate.boardType = boardType
-        
         discoveryInfo["boardType"] = boardType
-        
         
         self.serviceAdvertiser = MCNearbyServiceAdvertiser(peer: myPeerId, discoveryInfo: discoveryInfo, serviceType: serviceType)
         
@@ -189,6 +178,7 @@ extension MPCManager: MCNearbyServiceBrowserDelegate{
             self.searchPlayerDelegate?.assignPlayer("player1", pointType: "punto_rojo")
             browser.invitePeer(peerID, toSession: self.session, withContext: nil, timeout: 10)
         } else {
+            print(info)
             self.appDelegate.boardType = info!["boardType"]!
         }
         
