@@ -138,8 +138,8 @@ extension MainScene: MPCSearchPlayerDelegate {
         self.appDelegate.pointType = pointType
     }
     
-    func setBoardType(boardType : String) {
-        self.appDelegate.boardType = boardType
+    func setDiskType(diskType : String) {
+        self.appDelegate.diskType = diskType
     }
     
 }

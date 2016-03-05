@@ -21,7 +21,7 @@ class GameViewController: UIViewController {
             //skView.showsNodeCount = true
             
             // shows sprite physics body
-            //skView.showsPhysics = true
+            skView.showsPhysics = true
             
             /* Sprite Kit applies additional optimizations to improve rendering performance */
             skView.ignoresSiblingOrder = true

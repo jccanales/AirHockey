@@ -15,6 +15,8 @@
 		3D5FE9FC1C867E4100BC8A23 /* disk2.png in Resources */ = {isa = PBXBuildFile; fileRef = 3D5FE9F91C867E4100BC8A23 /* disk2.png */; };
 		3D5FE9FD1C867E4100BC8A23 /* disk3.png in Resources */ = {isa = PBXBuildFile; fileRef = 3D5FE9FA1C867E4100BC8A23 /* disk3.png */; };
 		3D6201E41C7A3F200088AE5F /* mitad1.png in Resources */ = {isa = PBXBuildFile; fileRef = 3D6201E31C7A3F200088AE5F /* mitad1.png */; };
+		3D8180EC1C8B332600F21754 /* mesa1.png in Resources */ = {isa = PBXBuildFile; fileRef = 3D8180EA1C8B332600F21754 /* mesa1.png */; };
+		3D8180ED1C8B332600F21754 /* mesa2.png in Resources */ = {isa = PBXBuildFile; fileRef = 3D8180EB1C8B332600F21754 /* mesa2.png */; };
 		3D8779C81C81784700AED305 /* splashscreen.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 3D8779C71C81784700AED305 /* splashscreen.jpg */; };
 		3D8779CC1C817E9D00AED305 /* main_background.png in Resources */ = {isa = PBXBuildFile; fileRef = 3D8779CB1C817E9D00AED305 /* main_background.png */; };
 		3D8779CE1C8184E400AED305 /* RulesScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D8779CD1C8184E400AED305 /* RulesScene.swift */; };
@@ -24,12 +26,6 @@
 		3D8779D81C81E88700AED305 /* punto_blanco.png in Resources */ = {isa = PBXBuildFile; fileRef = 3D8779D51C81E88700AED305 /* punto_blanco.png */; };
 		3D8779D91C81E88700AED305 /* punto_rojo.png in Resources */ = {isa = PBXBuildFile; fileRef = 3D8779D61C81E88700AED305 /* punto_rojo.png */; };
 		3D8779DA1C81E88700AED305 /* punto_azul.png in Resources */ = {isa = PBXBuildFile; fileRef = 3D8779D71C81E88700AED305 /* punto_azul.png */; };
-		3D8779ED1C81E9AC00AED305 /* var1mesa2.png in Resources */ = {isa = PBXBuildFile; fileRef = 3D8779E71C81E9AC00AED305 /* var1mesa2.png */; };
-		3D8779EE1C81E9AC00AED305 /* var1mesa1.png in Resources */ = {isa = PBXBuildFile; fileRef = 3D8779E81C81E9AC00AED305 /* var1mesa1.png */; };
-		3D8779EF1C81E9AC00AED305 /* var2mesa2.png in Resources */ = {isa = PBXBuildFile; fileRef = 3D8779E91C81E9AC00AED305 /* var2mesa2.png */; };
-		3D8779F01C81E9AC00AED305 /* var2mesa1.png in Resources */ = {isa = PBXBuildFile; fileRef = 3D8779EA1C81E9AC00AED305 /* var2mesa1.png */; };
-		3D8779F21C81E9AC00AED305 /* var3mesa1.png in Resources */ = {isa = PBXBuildFile; fileRef = 3D8779EC1C81E9AC00AED305 /* var3mesa1.png */; };
-		3D8779F41C81F12C00AED305 /* var3mesa2.png in Resources */ = {isa = PBXBuildFile; fileRef = 3D8779F31C81F12C00AED305 /* var3mesa2.png */; };
 		3D8779F61C81FD2600AED305 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D8779F51C81FD2600AED305 /* Message.swift */; };
 		3DA0E38E1C5C5D7300DA75A3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DA0E38D1C5C5D7300DA75A3 /* AppDelegate.swift */; };
 		3DA0E3901C5C5D7300DA75A3 /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = 3DA0E38F1C5C5D7300DA75A3 /* GameScene.sks */; };
@@ -70,6 +66,8 @@
 		3D5FE9F91C867E4100BC8A23 /* disk2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = disk2.png; sourceTree = "<group>"; };
 		3D5FE9FA1C867E4100BC8A23 /* disk3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = disk3.png; sourceTree = "<group>"; };
 		3D6201E31C7A3F200088AE5F /* mitad1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mitad1.png; sourceTree = "<group>"; };
+		3D8180EA1C8B332600F21754 /* mesa1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mesa1.png; sourceTree = "<group>"; };
+		3D8180EB1C8B332600F21754 /* mesa2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mesa2.png; sourceTree = "<group>"; };
 		3D8779C71C81784700AED305 /* splashscreen.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = splashscreen.jpg; sourceTree = "<group>"; };
 		3D8779CB1C817E9D00AED305 /* main_background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = main_background.png; sourceTree = "<group>"; };
 		3D8779CD1C8184E400AED305 /* RulesScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RulesScene.swift; sourceTree = "<group>"; };
@@ -79,12 +77,6 @@
 		3D8779D51C81E88700AED305 /* punto_blanco.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = punto_blanco.png; sourceTree = "<group>"; };
 		3D8779D61C81E88700AED305 /* punto_rojo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = punto_rojo.png; sourceTree = "<group>"; };
 		3D8779D71C81E88700AED305 /* punto_azul.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = punto_azul.png; sourceTree = "<group>"; };
-		3D8779E71C81E9AC00AED305 /* var1mesa2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = var1mesa2.png; sourceTree = "<group>"; };
-		3D8779E81C81E9AC00AED305 /* var1mesa1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = var1mesa1.png; sourceTree = "<group>"; };
-		3D8779E91C81E9AC00AED305 /* var2mesa2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = var2mesa2.png; sourceTree = "<group>"; };
-		3D8779EA1C81E9AC00AED305 /* var2mesa1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = var2mesa1.png; sourceTree = "<group>"; };
-		3D8779EC1C81E9AC00AED305 /* var3mesa1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = var3mesa1.png; sourceTree = "<group>"; };
-		3D8779F31C81F12C00AED305 /* var3mesa2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = var3mesa2.png; sourceTree = "<group>"; };
 		3D8779F51C81FD2600AED305 /* Message.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
 		3DA0E38A1C5C5D7300DA75A3 /* AirHockey.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AirHockey.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3DA0E38D1C5C5D7300DA75A3 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -195,13 +187,9 @@
 		3DC63FE21C78EA7B0086C3FD /* Assets */ = {
 			isa = PBXGroup;
 			children = (
+				3D8180EA1C8B332600F21754 /* mesa1.png */,
+				3D8180EB1C8B332600F21754 /* mesa2.png */,
 				3D5FE9F61C8547C500BC8A23 /* point.wav */,
-				3D8779E81C81E9AC00AED305 /* var1mesa1.png */,
-				3D8779E71C81E9AC00AED305 /* var1mesa2.png */,
-				3D8779EA1C81E9AC00AED305 /* var2mesa1.png */,
-				3D8779E91C81E9AC00AED305 /* var2mesa2.png */,
-				3D8779EC1C81E9AC00AED305 /* var3mesa1.png */,
-				3D8779F31C81F12C00AED305 /* var3mesa2.png */,
 				3D8779D51C81E88700AED305 /* punto_blanco.png */,
 				3D8779D61C81E88700AED305 /* punto_rojo.png */,
 				3D8779D71C81E88700AED305 /* punto_azul.png */,
@@ -325,24 +313,20 @@
 			buildActionMask = 2147483647;
 			files = (
 				3D8779D91C81E88700AED305 /* punto_rojo.png in Resources */,
+				3D8180EC1C8B332600F21754 /* mesa1.png in Resources */,
 				3D5FE9FC1C867E4100BC8A23 /* disk2.png in Resources */,
-				3D8779F01C81E9AC00AED305 /* var2mesa1.png in Resources */,
-				3D8779ED1C81E9AC00AED305 /* var1mesa2.png in Resources */,
 				3DA0E3901C5C5D7300DA75A3 /* GameScene.sks in Resources */,
+				3D8180ED1C8B332600F21754 /* mesa2.png in Resources */,
 				3DA0E39C1C5C5D7300DA75A3 /* LaunchScreen.storyboard in Resources */,
 				3D5FE9F71C8547C500BC8A23 /* point.wav in Resources */,
-				3D8779EF1C81E9AC00AED305 /* var2mesa2.png in Resources */,
 				3D0070AA1C7A5D8100D5BD2D /* pad2.png in Resources */,
 				3D8779DA1C81E88700AED305 /* punto_azul.png in Resources */,
 				3D8779CC1C817E9D00AED305 /* main_background.png in Resources */,
 				3D8779D11C8185CA00AED305 /* about_background.png in Resources */,
 				3D8779D81C81E88700AED305 /* punto_blanco.png in Resources */,
-				3D8779EE1C81E9AC00AED305 /* var1mesa1.png in Resources */,
 				3D5FE9FD1C867E4100BC8A23 /* disk3.png in Resources */,
 				3D0070A91C7A5D8100D5BD2D /* pad1.png in Resources */,
 				3D8779C81C81784700AED305 /* splashscreen.jpg in Resources */,
-				3D8779F41C81F12C00AED305 /* var3mesa2.png in Resources */,
-				3D8779F21C81E9AC00AED305 /* var3mesa1.png in Resources */,
 				3DA0E3991C5C5D7300DA75A3 /* Assets.xcassets in Resources */,
 				3D8779D21C8185CA00AED305 /* rules_background.png in Resources */,
 				3D6201E41C7A3F200088AE5F /* mitad1.png in Resources */,

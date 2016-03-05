@@ -31,7 +31,7 @@ protocol MPCSearchPlayerDelegate{
     
     func assignPlayer(player : String, pointType : String)
     
-    func setBoardType(boardType : String)
+    func setDiskType(diskType : String)
 }
 
 class MPCManager: NSObject{
@@ -53,10 +53,10 @@ class MPCManager: NSObject{
         var discoveryInfo = [String:String]()
         discoveryInfo["number"] = String(myNumber)
         
-        let boardVariation = rand() % 3 + 1
-        let boardType = "var\(boardVariation)"
-        self.appDelegate.boardType = boardType
-        discoveryInfo["boardType"] = boardType
+        let diskVariation = rand() % 3 + 1
+        let diskType = "disk\(diskVariation)"
+        self.appDelegate.diskType = diskType
+        discoveryInfo["diskType"] = diskType
         
         
         self.serviceAdvertiser = MCNearbyServiceAdvertiser(peer: myPeerId, discoveryInfo: discoveryInfo, serviceType: serviceType)
@@ -82,10 +82,10 @@ class MPCManager: NSObject{
         var discoveryInfo = [String:String]()
         discoveryInfo["number"] = String(myNumber)
         
-        let boardVariation = rand() % 3 + 1
-        let boardType = "var\(boardVariation)"
-        self.appDelegate.boardType = boardType
-        discoveryInfo["boardType"] = boardType
+        let diskVariation = rand() % 3 + 1
+        let diskType = "disk\(diskVariation)"
+        self.appDelegate.diskType = diskType
+        discoveryInfo["diskType"] = diskType
         
         self.serviceAdvertiser = MCNearbyServiceAdvertiser(peer: myPeerId, discoveryInfo: discoveryInfo, serviceType: serviceType)
         
@@ -170,6 +170,8 @@ extension MPCManager: MCNearbyServiceBrowserDelegate{
     func browser(browser: MCNearbyServiceBrowser, foundPeer peerID: MCPeerID, withDiscoveryInfo info: [String : String]?) {
         NSLog("%@", "foundPeer: \(peerID)")
         
+        print(info)
+        
         let string = info!["number"]
         
         let number = Int32(string!)
@@ -178,8 +180,7 @@ extension MPCManager: MCNearbyServiceBrowserDelegate{
             self.searchPlayerDelegate?.assignPlayer("player1", pointType: "punto_rojo")
             browser.invitePeer(peerID, toSession: self.session, withContext: nil, timeout: 10)
         } else {
-            print(info)
-            self.appDelegate.boardType = info!["boardType"]!
+            self.appDelegate.diskType = info!["diskType"]!
         }
         
         //NSLog("%@", "invitePeer: \(peerID)")
