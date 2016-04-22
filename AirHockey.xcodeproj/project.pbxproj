@@ -15,6 +15,8 @@
 		3D5FE9FC1C867E4100BC8A23 /* disk2.png in Resources */ = {isa = PBXBuildFile; fileRef = 3D5FE9F91C867E4100BC8A23 /* disk2.png */; };
 		3D5FE9FD1C867E4100BC8A23 /* disk3.png in Resources */ = {isa = PBXBuildFile; fileRef = 3D5FE9FA1C867E4100BC8A23 /* disk3.png */; };
 		3D6201E41C7A3F200088AE5F /* mitad1.png in Resources */ = {isa = PBXBuildFile; fileRef = 3D6201E31C7A3F200088AE5F /* mitad1.png */; };
+		3D7616EC1CCAC378004B7838 /* YouLose.png in Resources */ = {isa = PBXBuildFile; fileRef = 3D7616EA1CCAC378004B7838 /* YouLose.png */; };
+		3D7616ED1CCAC378004B7838 /* YouWin.png in Resources */ = {isa = PBXBuildFile; fileRef = 3D7616EB1CCAC378004B7838 /* YouWin.png */; };
 		3D8180EC1C8B332600F21754 /* mesa1.png in Resources */ = {isa = PBXBuildFile; fileRef = 3D8180EA1C8B332600F21754 /* mesa1.png */; };
 		3D8180ED1C8B332600F21754 /* mesa2.png in Resources */ = {isa = PBXBuildFile; fileRef = 3D8180EB1C8B332600F21754 /* mesa2.png */; };
 		3D8779C81C81784700AED305 /* splashscreen.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 3D8779C71C81784700AED305 /* splashscreen.jpg */; };
@@ -66,6 +68,8 @@
 		3D5FE9F91C867E4100BC8A23 /* disk2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = disk2.png; sourceTree = "<group>"; };
 		3D5FE9FA1C867E4100BC8A23 /* disk3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = disk3.png; sourceTree = "<group>"; };
 		3D6201E31C7A3F200088AE5F /* mitad1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mitad1.png; sourceTree = "<group>"; };
+		3D7616EA1CCAC378004B7838 /* YouLose.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = YouLose.png; sourceTree = "<group>"; };
+		3D7616EB1CCAC378004B7838 /* YouWin.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = YouWin.png; sourceTree = "<group>"; };
 		3D8180EA1C8B332600F21754 /* mesa1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mesa1.png; sourceTree = "<group>"; };
 		3D8180EB1C8B332600F21754 /* mesa2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mesa2.png; sourceTree = "<group>"; };
 		3D8779C71C81784700AED305 /* splashscreen.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = splashscreen.jpg; sourceTree = "<group>"; };
@@ -187,6 +191,8 @@
 		3DC63FE21C78EA7B0086C3FD /* Assets */ = {
 			isa = PBXGroup;
 			children = (
+				3D7616EA1CCAC378004B7838 /* YouLose.png */,
+				3D7616EB1CCAC378004B7838 /* YouWin.png */,
 				3D8180EA1C8B332600F21754 /* mesa1.png */,
 				3D8180EB1C8B332600F21754 /* mesa2.png */,
 				3D5FE9F61C8547C500BC8A23 /* point.wav */,
@@ -314,11 +320,13 @@
 			files = (
 				3D8779D91C81E88700AED305 /* punto_rojo.png in Resources */,
 				3D8180EC1C8B332600F21754 /* mesa1.png in Resources */,
+				3D7616EC1CCAC378004B7838 /* YouLose.png in Resources */,
 				3D5FE9FC1C867E4100BC8A23 /* disk2.png in Resources */,
 				3DA0E3901C5C5D7300DA75A3 /* GameScene.sks in Resources */,
 				3D8180ED1C8B332600F21754 /* mesa2.png in Resources */,
 				3DA0E39C1C5C5D7300DA75A3 /* LaunchScreen.storyboard in Resources */,
 				3D5FE9F71C8547C500BC8A23 /* point.wav in Resources */,
+				3D7616ED1CCAC378004B7838 /* YouWin.png in Resources */,
 				3D0070AA1C7A5D8100D5BD2D /* pad2.png in Resources */,
 				3D8779DA1C81E88700AED305 /* punto_azul.png in Resources */,
 				3D8779CC1C817E9D00AED305 /* main_background.png in Resources */,

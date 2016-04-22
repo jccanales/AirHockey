@@ -71,7 +71,7 @@ class GameScene: SKScene {
         
         setupBorders()
         
-        //setupGoal()
+        setupGoal()
         setupPoints()
         
     }
@@ -251,6 +251,16 @@ class GameScene: SKScene {
             padTouched = false
         }
         
+        if(body?.node?.name == "endGame"){
+            self.appDelegate.mpcManager.session.disconnect()
+            let transition = SKTransition.revealWithDirection(.Up, duration: 1.0)
+            let nextScene = MainScene(size: scene!.size)
+            nextScene.scaleMode = .AspectFill
+            
+            scene?.view?.presentScene(nextScene, transition: transition)
+
+        }
+        
     }
     
     override func touchesMoved(touches: Set<UITouch>, withEvent event: UIEvent?) {
@@ -310,14 +320,19 @@ extension GameScene: MPCGameDelegate{
             addDisk()
         } else {
             
-            self.appDelegate.mpcManager.gameFinished()
-            self.appDelegate.mpcManager.session.disconnect()
-            let transition = SKTransition.revealWithDirection(.Up, duration: 1.0)
-            let nextScene = MainScene(size: scene!.size)
-            nextScene.scaleMode = .AspectFill
+            //show winning message
+            let label = SKSpriteNode(imageNamed: "YouWin")
+            label.name = "endGame"
+            label.position = CGPointMake(self.frame.width/2, self.frame.height/2)
+            label.size.height = label.size.height * 0.8
+            label.size.width = label.size.width * 0.8
             
-            scene?.view?.presentScene(nextScene, transition: transition)
-
+            label.zPosition = 3
+            
+            self.addChild(label)
+            
+            self.appDelegate.mpcManager.gameFinished()
+            
         }
     }
     
@@ -329,13 +344,17 @@ extension GameScene: MPCGameDelegate{
     
     func endGame () {
         
-        self.appDelegate.mpcManager.session.disconnect()
-        let transition = SKTransition.revealWithDirection(.Up, duration: 1.0)
-        let nextScene = MainScene(size: scene!.size)
-        nextScene.scaleMode = .AspectFill
+        //show losing message
+        let label = SKSpriteNode(imageNamed: "YouLose")
+        label.name = "endGame"
+        label.position = CGPointMake(self.frame.width/2, self.frame.height/2)
+        label.size.height = label.size.height * 0.8
+        label.size.width = label.size.width * 0.8
         
-        scene?.view?.presentScene(nextScene, transition: transition)
+        label.zPosition = 3
         
+        self.addChild(label)
+
     }
 }
 
